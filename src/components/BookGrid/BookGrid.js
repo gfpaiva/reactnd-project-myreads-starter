@@ -22,6 +22,7 @@ class BookGrid extends Component {
 	}
 }
 
-BookGrid.propTypes = {};
+BookGrid.propTypes = {
+};
 
 export default BookGrid;

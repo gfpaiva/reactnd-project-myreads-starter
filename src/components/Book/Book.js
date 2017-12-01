@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 class Book extends Component {
 	render() {
 
-		const {book = {}, shelfs, moveShelf} = this.props;
+		const {book = [], shelfs = [], moveShelf} = this.props;
 		return (
 			<li>
 				<div className="book">
@@ -21,10 +21,14 @@ class Book extends Component {
 							</select>
 						</div>
 					</div>
+
 					<div className="book-title">{book.title}</div>
-					<div className="book-authors">{book.authors.map((author, index) =>
-						<span style={{display: 'block'}} key={index}>{author}{index !== book.authors.length - 1 ? ', ' : ''}</span>
-					)}</div>
+
+					{book.authors&& book.authors.length > 0 &&
+						<div className="book-authors">{book.authors.map((author, index) =>
+							<span style={{display: 'block'}} key={index}>{author}{index !== book.authors.length - 1 ? ', ' : ''}</span>
+						)}</div>
+					}
 				</div>
 			</li>
 		);
