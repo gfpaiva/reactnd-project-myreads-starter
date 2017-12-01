@@ -15,6 +15,10 @@ class Option extends Component {
 	};
 }
 
-Option.propTypes = {}
+Option.propTypes = {
+	type: PropTypes.string.isRequired,
+	title: PropTypes.string.isRequired,
+	shelf: PropTypes.string
+};
 
 export default Option;

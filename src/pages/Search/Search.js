@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import * as BooksAPI from '../../utils/BooksAPI';
 import BookGrid from '../../components/BookGrid/BookGrid';
 import If from '../../components/If/If';
@@ -11,6 +12,15 @@ class Search extends Component {
 		typingTimeout: 0,
 		books: []
 	}
+
+	mergeBooks = books => {
+		return books.map(book => {
+			let findObject = _.findKey(this.props.books, {id: book.id});
+			if( findObject ) book.shelf = this.props.books[findObject].shelf;
+
+			return book;
+		});
+	};
 
 	typeHandler = (e) => {
 		let value = e.target.value;
@@ -27,9 +37,10 @@ class Search extends Component {
 			this.setState({
 				typingTimeout: setTimeout(() => {
 					BooksAPI.search(value)
+						.then(this.mergeBooks)
 						.then(books => this.setState({books}))
 						.then(() => window.scroll(0, 0))
-				}, 400)
+				}, 300)
 			})
 		}
 	};
@@ -65,5 +76,10 @@ class Search extends Component {
 		);
 	};
 }
+
+BookGrid.propTypes = {
+	shelfs: PropTypes.array.isRequired,
+	moveShelf: PropTypes.func.isRequired
+};
 
 export default Search;

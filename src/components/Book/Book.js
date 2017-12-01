@@ -4,18 +4,18 @@ import PropTypes from 'prop-types';
 
 class Book extends Component {
 	render() {
-
 		const {book = [], shelfs = [], moveShelf} = this.props;
+
 		return (
 			<li>
 				<div className="book">
 					<div className="book-top">
 						<div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${book.imageLinks.smallThumbnail}")` }}></div>
 						<div className="book-shelf-changer">
-							<select defaultValue={book.shelf} onChange={(e) => moveShelf(book, e.target.value)}>
-								<option value="none" disabled>Move to...</option>
-								{shelfs.map(_ =>
-									<Option {..._} key={_.type} shelf={book.shelf} />
+							<select defaultValue={book.shelf || 'move'} onChange={(e) => moveShelf(book, e.target.value)}>
+								<option value="move" disabled>Move to...</option>
+								{shelfs.map(currShelf =>
+									<Option {...currShelf} key={currShelf.type} shelf={book.shelf} />
 								)}
 								<option value="none">None</option>
 							</select>

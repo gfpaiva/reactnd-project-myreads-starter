@@ -4,7 +4,7 @@ import Book from '../Book/Book';
 
 class BookGrid extends Component {
 	render() {
-		const {currentBooks, shelfs, moveShelf} = this.props;
+		const {currentBooks = [], shelfs, moveShelf} = this.props;
 
 		return (
 			<ol className="books-grid">
@@ -23,6 +23,9 @@ class BookGrid extends Component {
 }
 
 BookGrid.propTypes = {
+	currentBooks: PropTypes.array.isRequired,
+	shelfs: PropTypes.array.isRequired,
+	moveShelf: PropTypes.func.isRequired
 };
 
 export default BookGrid;

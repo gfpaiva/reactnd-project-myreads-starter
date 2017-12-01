@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import * as BooksAPI from './utils/BooksAPI';
 import Home from './pages/Home/Home';
 import Search from './pages/Search/Search';
@@ -22,9 +22,9 @@ class BooksApp extends Component {
 	moveShelf = (book, shelf) => {
 		BooksAPI.update(book, shelf);
 		this.setState(function(prev) {
-			let newState = prev.books.filter(_ => _.id !== book.id);
+			let newState = prev.books.filter(prevBook => prevBook.id !== book.id);
 			book.shelf = shelf;
-			return newState.concat(book);
+			return {books: newState.concat(book)}
 		});
 	};
 
@@ -57,6 +57,7 @@ class BooksApp extends Component {
 				<Route path="/search" render={() => (
 					<Search
 						{...{shelfs}}
+						books={this.state.books}
 						moveShelf={this.moveShelf}
 					/>
 				)}/>

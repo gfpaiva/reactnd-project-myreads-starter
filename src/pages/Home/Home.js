@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 class Home extends Component {
 
 	render() {
-		const { shelfs = [], books, moveShelf } = this.props;
+		const { shelfs = [], books = [], moveShelf } = this.props;
 
 		return (
 			<div className="list-books">
