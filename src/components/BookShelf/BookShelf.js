@@ -4,7 +4,7 @@ import BookGrid from '../BookGrid/BookGrid';
 import PropTypes from 'prop-types';
 
 const BookShelf = ({ type, title, books, shelfs, moveShelf }) => {
-	const currentBooks = books.filter(book => book.shelf === type);
+	let currentBooks = books.filter(book => book.shelf === type);
 
 	return (
 		<If condition={currentBooks.length > 0}>

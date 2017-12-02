@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import * as BooksAPI from '../../utils/BooksAPI';
 import Header from '../../components/Header/Header';
-import Authors from '../../components/Authors/Authors';
+import SelectShelf from '../../components/SelectShelf/SelectShelf';
+import MultiInfo from '../../components/MultiInfo/MultiInfo';
 import './Single.css';
 // import If from '../../components/If/If';
 // import PropTypes from 'prop-types';
@@ -19,7 +20,7 @@ class Single extends Component {
 
 	render() {
 		const book = this.state.book;
-
+		const { shelfs = [], moveShelf } = this.props;
 
 		return (
 			<div>
@@ -31,9 +32,20 @@ class Single extends Component {
 							<div className="single__general">
 								<img src={book.imageLinks.thumbnail} alt={book.title} title={book.title} />
 								<div>
-									<h2>{book.title}: <small>{book.subtitle}</small></h2>
-									<Authors authors={book.authors} />
+									<h2>{book.title}{(book.subtitle) ? <small>: {book.subtitle}</small> : ''}</h2>
+									<MultiInfo
+										info={book.authors}
+										classes="book-authors"
+										multiline={true}
+									/>
 									<p>{book.description}</p>
+									<div>
+										<span>Shelf: </span>
+										<SelectShelf
+											{...{shelfs, moveShelf, book}}
+											defaultValue={book.shelf || 'move'}
+										/>
+									</div>
 								</div>
 							</div>
 
@@ -42,8 +54,8 @@ class Single extends Component {
 								<p>Publish Date: <strong>{book.publishedDate}</strong></p>
 								<p>Pages: <strong>{book.pageCount}</strong></p>
 								<p>Language: <strong>{book.language.toUpperCase()}</strong></p>
-								<p>Categories: <strong></strong></p>
-								<p>ISBN: <strong></strong></p>
+								<p>Categories: <strong><MultiInfo info={book.categories} /></strong></p>
+								<p>ISBN: <strong><MultiInfo info={book.industryIdentifiers} objectKey="identifier" /></strong></p>
 								<a href={book.previewLink} target="_blank">See in google books</a>
 							</div>
 						</div>

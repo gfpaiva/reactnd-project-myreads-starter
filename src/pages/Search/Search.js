@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import {findKey} from 'lodash';
+import {findKey as _findKey} from 'lodash';
 import * as BooksAPI from '../../utils/BooksAPI';
-import BookGrid from '../../components/BookGrid/BookGrid';
 import If from '../../components/If/If';
+import BookGrid from '../../components/BookGrid/BookGrid';
+import Filter from '../../components/Filter/Filter';
 import PropTypes from 'prop-types';
 
 class Search extends Component {
 	state = {
 		query: '',
 		typingTimeout: 0,
-		books: []
+		searchComplete: false,
+		books: [],
+		allBooks: [],
+		options: []
 	}
 
 	componentDidMount() {
@@ -18,8 +22,10 @@ class Search extends Component {
 	}
 
 	mergeBooks = books => {
+		if(books.error) return [];
+
 		return books.map(book => {
-			let findObject = findKey(this.props.books, {id: book.id});
+			let findObject = _findKey(this.props.books, {id: book.id});
 			if( findObject ) book.shelf = this.props.books[findObject].shelf;
 
 			return book;
@@ -34,18 +40,70 @@ class Search extends Component {
 		 }
 
 		this.setState({
-			query: e.target.value
+			query: e.target.value,
+			searchComplete: false
 		});
 
 		if(value.length > 2) {
 			this.setState({
 				typingTimeout: setTimeout(() => {
 					BooksAPI.search(value)
-						.then(this.mergeBooks)
-						.then(books => this.setState({books}))
-						.then(() => window.scroll(0, 0))
+					.then(this.mergeBooks)
+					.then(books => this.setState({books, allBooks: books}))
+					.then(() => this.setState({
+						searchComplete: true,
+						options: []
+					}))
+					.then(() => {
+						window.scroll(0, 0);
+						document.querySelectorAll('input[type=checkbox]:checked').forEach(function(v) {
+							v.checked = false;
+						});
+					})
 				}, 300)
 			})
+		}
+	};
+
+	filterResults = (options) => {
+		let results = [];
+
+		options.forEach(option => {
+			const filtered =  this.state.allBooks.filter(_ => _.categories && _.categories.length > 0 && _.categories.indexOf(option) >= 0);
+			results = results.concat(filtered);
+		});
+
+		return results;
+	}
+
+	filterHandler = (e) => {
+		const value = e.target.value;
+		const checks = this.state.options;
+
+		if(e.target.checked) {
+			const newOptions = checks.concat(value);
+			const filteredResults = this.filterResults(newOptions);
+
+			this.setState({
+				books: filteredResults,
+				options: newOptions
+			});
+		} else {
+			const newOptions = checks.filter(option => option !== value);
+
+			if(newOptions <= 0) {
+				this.setState({
+					books: this.state.allBooks,
+					options: newOptions
+				});
+			} else {
+				const filteredResults = this.filterResults(newOptions);
+
+				this.setState({
+					books: filteredResults,
+					options: newOptions
+				});
+			}
 		}
 	};
 
@@ -76,10 +134,16 @@ class Search extends Component {
 				</div>
 				<div className="search-books-results">
 					<If condition={this.state.books.length > 0}>
-						<BookGrid
-							currentBooks={this.state.books}
-							{...{shelfs, moveShelf}}
-						/>
+						<div>
+							<Filter filterHandler={this.filterHandler} allBooks={this.state.allBooks} />
+							<BookGrid
+								currentBooks={this.state.books}
+								{...{shelfs, moveShelf}}
+							/>
+						</div>
+					</If>
+					<If condition={this.state.books.length <= 0 && this.state.searchComplete}>
+						<h2 style={{textAlign: 'center'}}>We dont find any results 😐</h2>
 					</If>
 				</div>
 			</div>
