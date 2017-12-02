@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import {findKey as _findKey} from 'lodash';
+import {findKey as _findKey, orderBy as _orderBy} from 'lodash';
 import * as BooksAPI from '../../utils/BooksAPI';
 import If from '../../components/If/If';
 import BookGrid from '../../components/BookGrid/BookGrid';
 import Filter from '../../components/Filter/Filter';
+import Order from '../../components/Order/Order';
 import PropTypes from 'prop-types';
 
 class Search extends Component {
@@ -14,7 +15,8 @@ class Search extends Component {
 		searchComplete: false,
 		books: [],
 		allBooks: [],
-		options: []
+		options: [],
+		controlOrder: 'select'
 	}
 
 	componentDidMount() {
@@ -54,12 +56,7 @@ class Search extends Component {
 						searchComplete: true,
 						options: []
 					}))
-					.then(() => {
-						window.scroll(0, 0);
-						document.querySelectorAll('input[type=checkbox]:checked').forEach(function(v) {
-							v.checked = false;
-						});
-					})
+					.then(() => window.scroll(0, 0))
 				}, 300)
 			})
 		}
@@ -85,6 +82,7 @@ class Search extends Component {
 			const filteredResults = this.filterResults(newOptions);
 
 			this.setState({
+				controlOrder: 'select',
 				books: filteredResults,
 				options: newOptions
 			});
@@ -93,6 +91,7 @@ class Search extends Component {
 
 			if(newOptions <= 0) {
 				this.setState({
+					controlOrder: 'select',
 					books: this.state.allBooks,
 					options: newOptions
 				});
@@ -100,12 +99,22 @@ class Search extends Component {
 				const filteredResults = this.filterResults(newOptions);
 
 				this.setState({
+					controlOrder: 'select',
 					books: filteredResults,
 					options: newOptions
 				});
 			}
 		}
 	};
+
+	orderHandler = (e) => {
+		const value = e.target.value.split(',');
+		const field = value[0];
+		const order = value[1];
+		const books = _orderBy(this.state.books, field, order);
+
+		this.setState({ books, controlOrder: e.target.value });
+	}
 
 	render() {
 		const {shelfs, moveShelf} = this.props;
@@ -136,6 +145,7 @@ class Search extends Component {
 					<If condition={this.state.books.length > 0}>
 						<div>
 							<Filter filterHandler={this.filterHandler} allBooks={this.state.allBooks} />
+							<Order orderHandler={this.orderHandler} controlOrder={this.state.controlOrder} />
 							<BookGrid
 								currentBooks={this.state.books}
 								{...{shelfs, moveShelf}}

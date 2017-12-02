@@ -63,11 +63,12 @@ class BooksApp extends Component {
 							moveShelf={this.moveShelf}
 						/>
 					)}/>
-					<Route path="/book/:id" render={({match}) => (
+					<Route path="/book/:id" render={({match, history}) => (
 						<Single
 							bookId={match.params.id}
-							{...{shelfs}}
+							{...{shelfs, history}}
 							moveShelf={this.moveShelf}
+
 						/>
 					)} />
 					<Route render={() => (<h1 style={{textAlign: 'center'}}>Page not foud 😡</h1>)} />

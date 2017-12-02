@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import * as BooksAPI from '../../utils/BooksAPI';
 import Header from '../../components/Header/Header';
 import SelectShelf from '../../components/SelectShelf/SelectShelf';
@@ -20,12 +19,12 @@ class Single extends Component {
 
 	render() {
 		const book = this.state.book;
-		const { shelfs = [], moveShelf } = this.props;
+		const { shelfs = [], moveShelf, history } = this.props;
 
 		return (
 			<div>
 				<Header title={book.title || ''} />
-				<Link to="/" className="close-search">Close</Link>
+				<a href="#" onClick={() => history.goBack()} className="close-search">Close</a>
 				{Object.keys(book).length > 0 &&
 					(
 						<div className="single container">
