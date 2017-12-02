@@ -1,24 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 import If from '../If/If';
 import BookGrid from '../BookGrid/BookGrid';
 import PropTypes from 'prop-types';
 
-class BookShelf extends Component {
-	render() {
-		const { type, title, books, shelfs, moveShelf } = this.props;
-		const currentBooks = books.filter(book => book.shelf === type);
+const BookShelf = ({ type, title, books, shelfs, moveShelf }) => {
+	const currentBooks = books.filter(book => book.shelf === type);
 
-		return (
-			<If condition={currentBooks.length > 0}>
-				<div className="bookshelf">
-					<h2 className="bookshelf-title">{title}</h2>
-					<div className="bookshelf-books">
-							<BookGrid {...{currentBooks}} {...{shelfs, moveShelf}} />
-					</div>
+	return (
+		<If condition={currentBooks.length > 0}>
+			<div className="bookshelf">
+				<h2 className="bookshelf-title">{title}</h2>
+				<div className="bookshelf-books">
+						<BookGrid {...{currentBooks}} {...{shelfs, moveShelf}} />
 				</div>
-			</If>
-		);
-	};
+			</div>
+		</If>
+	);
 };
 
 BookShelf.propTypes = {

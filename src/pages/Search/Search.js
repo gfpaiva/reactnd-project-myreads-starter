@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import _ from 'lodash';
+import {findKey} from 'lodash';
 import * as BooksAPI from '../../utils/BooksAPI';
 import BookGrid from '../../components/BookGrid/BookGrid';
 import If from '../../components/If/If';
@@ -13,9 +13,13 @@ class Search extends Component {
 		books: []
 	}
 
+	componentDidMount() {
+		this.searchInput.focus();
+	}
+
 	mergeBooks = books => {
 		return books.map(book => {
-			let findObject = _.findKey(this.props.books, {id: book.id});
+			let findObject = findKey(this.props.books, {id: book.id});
 			if( findObject ) book.shelf = this.props.books[findObject].shelf;
 
 			return book;
@@ -61,7 +65,13 @@ class Search extends Component {
 							However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
 							you don't find a specific author or title. Every search is limited by search terms.
 						*/}
-						<input type="text" placeholder="Search by title or author" value={this.state.query} onChange={this.typeHandler}/>
+						<input
+							type="text"
+							placeholder="Search by title or author"
+							value={this.state.query}
+							onChange={this.typeHandler}
+							ref={(input) => { this.searchInput = input; }}
+						/>
 					</div>
 				</div>
 				<div className="search-books-results">
