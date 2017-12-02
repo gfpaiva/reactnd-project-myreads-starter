@@ -23,6 +23,11 @@ class Search extends Component {
 		this.searchInput.focus();
 	}
 
+	/**
+	 * Merge info loaded in search w/ books in state of the App/Shelves to persist current shelf in this page
+	 * @param {Array} books Array of books result of search
+	 * @returns {Array} final data of the books merged
+	 */
 	mergeBooks = books => {
 		if(books.error) return [];
 
@@ -34,6 +39,11 @@ class Search extends Component {
 		});
 	};
 
+
+	/**
+	 * Handler deal with input text and do the search
+	 * @param {Object} e Event
+	 */
 	typeHandler = (e) => {
 		let value = e.target.value;
 
@@ -62,6 +72,11 @@ class Search extends Component {
 		}
 	};
 
+	/**
+	 * Filter results of the books by a selected (one or more) categories
+	 * @param {Array} options Array of selected categories
+	 * @returns {Array} books in selected categories
+	 */
 	filterResults = (options) => {
 		let results = [];
 
@@ -73,11 +88,15 @@ class Search extends Component {
 		return results;
 	}
 
+	/**
+	 * Handler deal with input checkbox and do the filter
+	 * @param {Object} e Event
+	 */
 	filterHandler = (e) => {
 		const value = e.target.value;
 		const checks = this.state.options;
 
-		if(e.target.checked) {
+		if(e.target.checked) { // Set state w/ selected
 			const newOptions = checks.concat(value);
 			const filteredResults = this.filterResults(newOptions);
 
@@ -89,13 +108,13 @@ class Search extends Component {
 		} else {
 			const newOptions = checks.filter(option => option !== value);
 
-			if(newOptions <= 0) {
+			if(newOptions <= 0) { // Dont have options checked, set state to all books
 				this.setState({
 					controlOrder: 'select',
 					books: this.state.allBooks,
 					options: newOptions
 				});
-			} else {
+			} else { // Set state w/ selected
 				const filteredResults = this.filterResults(newOptions);
 
 				this.setState({
@@ -107,6 +126,10 @@ class Search extends Component {
 		}
 	};
 
+	/**
+	 * Handler deal with select and order books
+	 * @param {Object} e Event
+	 */
 	orderHandler = (e) => {
 		const value = e.target.value.split(',');
 		const field = value[0];
@@ -152,6 +175,7 @@ class Search extends Component {
 							/>
 						</div>
 					</If>
+
 					<If condition={this.state.books.length <= 0 && this.state.searchComplete}>
 						<h2 style={{textAlign: 'center'}}>We dont find any results 😐</h2>
 					</If>

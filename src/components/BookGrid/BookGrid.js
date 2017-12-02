@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Book from '../Book/Book';
 
-const BookGrid = ({ currentBooks = [], shelfs, moveShelf }) => {
+const BookGrid = ( { currentBooks = [], shelfs, moveShelf } ) => {
 
 	return (
 		<ol className="books-grid">

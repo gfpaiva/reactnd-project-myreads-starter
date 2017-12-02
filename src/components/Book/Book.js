@@ -4,7 +4,7 @@ import MultiInfo from '../MultiInfo/MultiInfo';
 import SelectShelf from '../SelectShelf/SelectShelf';
 import PropTypes from 'prop-types';
 
-const Book = ({book = [], shelfs = [], moveShelf}) => {
+const Book = ( { book = [], shelfs = [], moveShelf } ) => {
 	return (
 		<li>
 			<div className="book">

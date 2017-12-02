@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Option from '../Option/Option';
 
-const SelectShelf = ({shelfs = [], defaultValue = 'move', moveShelf, book = {}}) => {
+const SelectShelf = ( { shelfs = [], defaultValue = 'move', moveShelf, book = {} } ) => {
 	return (
 		<select {...{defaultValue}} onChange={(e) => moveShelf(book, e.target.value)}>
 			<option value="move" disabled>Move to...</option>

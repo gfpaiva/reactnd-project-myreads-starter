@@ -12,6 +12,7 @@ class BooksApp extends Component {
 	};
 
 	componentDidMount() {
+		//Fetch all my books is state is empty
 		if(this.state.books.length <= 0) {
 			BooksAPI.getAll()
 				.then(books => {
@@ -20,6 +21,11 @@ class BooksApp extends Component {
 		}
 	}
 
+	/**
+	 * Move book from other shelf,fetch change if server and update state
+	 * @param {Object} book Single book object
+	 * @param {String} shelf String represent de new shelf
+	 */
 	moveShelf = (book, shelf) => {
 		BooksAPI.update(book, shelf);
 		this.setState(function(prev) {
@@ -31,6 +37,7 @@ class BooksApp extends Component {
 
 
 	render() {
+		//Shelfs available
 		const shelfs = [
 			{
 				type: 'currentlyReading',
@@ -71,6 +78,7 @@ class BooksApp extends Component {
 
 						/>
 					)} />
+					{/* 404 page */}
 					<Route render={() => (<h1 style={{textAlign: 'center'}}>Page not foud 😡</h1>)} />
 				</Switch>
 			</div>

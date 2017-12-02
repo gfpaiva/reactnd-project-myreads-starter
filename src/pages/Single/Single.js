@@ -4,8 +4,6 @@ import Header from '../../components/Header/Header';
 import SelectShelf from '../../components/SelectShelf/SelectShelf';
 import MultiInfo from '../../components/MultiInfo/MultiInfo';
 import './Single.css';
-// import If from '../../components/If/If';
-// import PropTypes from 'prop-types';
 
 class Single extends Component {
 	state = {
@@ -13,6 +11,7 @@ class Single extends Component {
 	};
 
 	componentDidMount() {
+		//Fetch info w/ bookId
 		BooksAPI.get(this.props.bookId)
 			.then(book => this.setState({ book }))
 	};

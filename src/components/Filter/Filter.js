@@ -3,10 +3,10 @@ import {uniq as _uniq} from 'lodash';
 import PropTypes from 'prop-types';
 import If from '../If/If';
 
-const Filter = ( {filterHandler, allBooks = []} ) => {
+const Filter = ( { filterHandler, allBooks = [] } ) => {
 
-	let categories = allBooks.map(book => book.categories && book.categories.join(', '));
-	categories = _uniq(categories);
+	let categories = allBooks.map(book => book.categories && book.categories.join(', ')); // Merge categories
+	categories = _uniq(categories); // Remove dupl
 
 	return (
 		<div>

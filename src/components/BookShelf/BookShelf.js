@@ -3,8 +3,8 @@ import If from '../If/If';
 import BookGrid from '../BookGrid/BookGrid';
 import PropTypes from 'prop-types';
 
-const BookShelf = ({ type, title, books, shelfs, moveShelf }) => {
-	let currentBooks = books.filter(book => book.shelf === type);
+const BookShelf = ( { type, title, books, shelfs, moveShelf } ) => {
+	let currentBooks = books.filter(book => book.shelf === type); //Filter books in this shelf
 
 	return (
 		<If condition={currentBooks.length > 0}>

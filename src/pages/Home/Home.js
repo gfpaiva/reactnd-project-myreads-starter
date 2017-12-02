@@ -4,7 +4,7 @@ import Header from '../../components/Header/Header';
 import BookShelf from '../../components/BookShelf/BookShelf';
 import PropTypes from 'prop-types';
 
-const Home = ({ shelfs = [], books = [], moveShelf }) => {
+const Home = ( { shelfs = [], books = [], moveShelf } ) => {
 	return (
 		<div className="list-books">
 			<Header />

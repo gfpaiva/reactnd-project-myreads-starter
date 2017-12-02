@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import If from '../If/If';
 
-const MultiInfo = ({info = [], classes = '', multiline = false, objectKey = ''}) => {
+const MultiInfo = ( { info = [], classes = '', multiline = false, objectKey = '' } ) => {
 	const style = multiline ? {style: {display: 'block'}} : {};
 
 	return (
