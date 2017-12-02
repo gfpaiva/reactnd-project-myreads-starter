@@ -1,0 +1,15 @@
+.container {
+	margin: 0 auto;
+	width: 90%;
+}
+
+.single__general {
+	align-items: center;
+	display: flex;
+	margin: 2em 0;
+}
+
+.single__general img { margin-right: 2em }
+.single__general h2 { margin: 0 }
+
+

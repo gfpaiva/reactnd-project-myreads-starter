@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import * as BooksAPI from './utils/BooksAPI';
 import Home from './pages/Home/Home';
 import Search from './pages/Search/Search';
+import Single from './pages/Single/Single';
 import './App.css';
 
 class BooksApp extends Component {
@@ -47,20 +48,26 @@ class BooksApp extends Component {
 
 		return (
 			<div className="app">
-				<Route exact path="/" render={() => (
-					<Home
-						{...{shelfs}}
-						books={this.state.books}
-						moveShelf={this.moveShelf}
-					/>
-				)} />
-				<Route path="/search" render={() => (
-					<Search
-						{...{shelfs}}
-						books={this.state.books}
-						moveShelf={this.moveShelf}
-					/>
-				)}/>
+				<Switch>
+					<Route exact path="/" render={() => (
+						<Home
+							{...{shelfs}}
+							books={this.state.books}
+							moveShelf={this.moveShelf}
+						/>
+					)} />
+					<Route path="/search/:term?" render={() => (
+						<Search
+							{...{shelfs}}
+							books={this.state.books}
+							moveShelf={this.moveShelf}
+						/>
+					)}/>
+					<Route path="/book/:id" render={({match}) => (
+						<Single bookId={match.params.id} />
+					)} />
+					<Route render={() => (<h1 style={{textAlign: 'center'}}>Page not foud 😡</h1>)} />
+				</Switch>
 			</div>
 		)
 	}
